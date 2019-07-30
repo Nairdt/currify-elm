@@ -3,6 +3,13 @@ import Types exposing(Song)
 
 import Utils exposing (..)
 import Models exposing (Model)
+import String
+import List exposing (range, map, intersperse)
+import String exposing (concat)
+import String exposing (contains)
+
+
+import List exposing (intersperse)
 
 -- Existe la funcion findSong que recibe
 -- una condicion y una lista de canciones
@@ -24,7 +31,12 @@ urlById id songs = ""
 
 -- Debería darnos las canciones que tengan ese texto en nombre o artista
 filterByName : String -> List Song -> List Song
-filterByName text songs = songs
+filterByName text songs = List.filter (contieneNombreOArtista text) songs
+
+contieneNombreOArtista : String -> Song -> Bool
+contieneNombreOArtista texto cancion = contains texto (cancion.name) || contains texto (cancion.artist)
+
+
 
 -- Recibe un id y tiene que likear/dislikear una cancion
 -- switchear song.liked
