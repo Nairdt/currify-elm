@@ -41,28 +41,36 @@ contieneNombreOArtista texto cancion = contains texto (cancion.name) || contains
 -- Recibe un id y tiene que likear/dislikear una cancion
 -- switchear song.liked
 toggleLike : String -> List Song -> List Song
-toggleLike id songs = songs
+toggleLike id songs = List.map (darLikeAUnaCancion id) songs
+
+darLikeAUnaCancion : String -> Song -> Song
+darLikeAUnaCancion idDeCancion cancion = if cancion.id == idDeCancion then {cancion | liked = not cancion.liked} else cancion
 
 -- Esta funcion tiene que decir si una cancion tiene
 -- nuestro like o no, por ahora funciona mal...
 -- hay que arreglarla
 isLiked : Song  -> Bool
-isLiked song = False
+isLiked song = song.liked
 
 -- Recibe una lista de canciones y nos quedamos solo con las que
 -- tienen un like
 filterLiked : List Song -> List Song
-filterLiked songs = songs
+filterLiked songs = List.filter isLiked songs
 
 -- Agrega una cancion a la cola de reproduccion
 -- (NO es necesario preocuparse porque este una sola vez)
 addSongToQueue : Song -> List Song -> List Song
-addSongToQueue song queue = queue
+addSongToQueue song queue = song :: queue
 
 -- Saca una cancion de la cola
 -- (NO es necesario que se elimine una sola vez si esta repetida)
 removeSongFromQueue : String -> List Song -> List Song
-removeSongFromQueue id queue = queue
+removeSongFromQueue id queue = List.filter (noCoincideId id) queue
+
+noCoincideId : String -> Song -> Bool
+noCoincideId idCancion cancion = not (cancion.id == idCancion)
+
+
 
 -- Hace que se reproduzca la canción que sigue y la saca de la cola
 playNextFromQueue : Model -> Model
