@@ -27,7 +27,11 @@ import List exposing (intersperse)
 
 -- Debería darnos la url de la cancion en base al id
 urlById : String -> List Song -> String
-urlById id songs = ""
+urlById id songs = .url (findSong (cancionConIgualId id) songs)
+
+
+cancionConIgualId : String -> Song -> Bool
+cancionConIgualId idCancion cancion = idCancion == cancion.id
 
 -- Debería darnos las canciones que tengan ese texto en nombre o artista
 filterByName : String -> List Song -> List Song
@@ -74,7 +78,9 @@ noCoincideId idCancion cancion = not (cancion.id == idCancion)
 
 -- Hace que se reproduzca la canción que sigue y la saca de la cola
 playNextFromQueue : Model -> Model
-playNextFromQueue model = model
+playNextFromQueue model = {model | playerUrl = urlById (idFirst model.queue) model.songs, queue = List.drop 1 model.queue}
+
+
 
 -------- Funciones Listas --------
 
